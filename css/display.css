@@ -308,3 +308,59 @@
   color: var(--text-primary);
   font-weight: 500;
 }
+
+/* ================================================================
+   Mobile & Small Screen Optimizations (< 600px)
+================================================================ */
+@media (max-width: 600px) {
+  .display-hardware-viewport {
+    min-height: 180px;
+  }
+
+  .oled-bezel-frame,
+  .lcd-bezel-frame {
+    padding: 12px 10px;
+    border-radius: var(--radius-md);
+  }
+
+  .oled-screen-inner,
+  .lcd-screen-inner {
+    padding: 12px 10px;
+    min-height: 125px;
+  }
+
+  .oled-line {
+    font-size: clamp(8px, 2.7vw, 11px);
+    line-height: 1.65;
+    letter-spacing: 0.2px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lcd-line {
+    font-size: clamp(9px, 3.1vw, 12px);
+    line-height: 1.65;
+    letter-spacing: 0.4px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .serial-viewport {
+    height: clamp(140px, 26vh, 180px);
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  .tab-btn {
+    min-height: 38px;
+    padding: 6px 12px;
+    font-size: 10.5px;
+  }
+
+  .btn-serial-action {
+    min-height: 32px;
+    padding: 4px 10px;
+  }
+}

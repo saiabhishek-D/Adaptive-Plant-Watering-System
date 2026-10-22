@@ -204,6 +204,22 @@ function setupEventListeners() {
   if (btnPushPerm) {
     btnPushPerm.addEventListener('click', requestPushPermission);
   }
+
+  // Mobile View Switcher Tabs (Ergonomic tabbed navigation on <= 768px screens)
+  const mobileNavPills = document.querySelectorAll('.mobile-nav-pill');
+  if (mobileNavPills.length > 0) {
+    mobileNavPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const view = pill.dataset.view || 'all';
+        mobileNavPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        // Toggle state class on document body
+        document.body.classList.remove('view-all', 'view-telemetry', 'view-displays', 'view-serial');
+        document.body.classList.add(`view-${view}`);
+      });
+    });
+  }
 }
 
 /**

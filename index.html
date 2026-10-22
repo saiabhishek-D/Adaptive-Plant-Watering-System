@@ -92,6 +92,26 @@
       </div>
     </header>
 
+    <!-- Mobile Segmented View Switcher (Visible on mobile/tablet screens <= 768px) -->
+    <nav id="mobile-view-nav" class="mobile-view-nav" aria-label="Mobile View Switcher">
+      <button class="mobile-nav-pill active" data-view="all">
+        <svg class="icon"><use href="#icon-chip"></use></svg>
+        <span>All</span>
+      </button>
+      <button class="mobile-nav-pill" data-view="telemetry">
+        <svg class="icon"><use href="#icon-water-drop"></use></svg>
+        <span>Sensors &amp; Status</span>
+      </button>
+      <button class="mobile-nav-pill" data-view="displays">
+        <svg class="icon"><use href="#icon-leaf"></use></svg>
+        <span>OLED / LCD</span>
+      </button>
+      <button class="mobile-nav-pill" data-view="serial">
+        <svg class="icon"><use href="#icon-terminal"></use></svg>
+        <span>Serial</span>
+      </button>
+    </nav>
+
     <!-- Main 3-Column IoT Dashboard Grid (Fluid Single Column on Mobile) -->
     <main class="dashboard-grid">
 

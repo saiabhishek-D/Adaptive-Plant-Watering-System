@@ -420,3 +420,46 @@
   background-color: var(--amber);
   animation: pulseAmber 1s infinite alternate;
 }
+
+/* ================================================================
+   Mobile Card & Telemetry Optimizations (< 600px)
+================================================================ */
+@media (max-width: 600px) {
+  .pump-card,
+  .buzzer-card {
+    padding: 14px 16px;
+  }
+
+  .pump-status-label,
+  .buzzer-status-label {
+    font-size: 15px;
+  }
+
+  .pred-dual-comparison {
+    gap: 8px;
+  }
+
+  .pred-tile {
+    padding: 8px 10px;
+  }
+
+  .pred-tile-val {
+    font-size: clamp(14px, 4vw, 16px);
+  }
+
+  .phase-zone-labels {
+    font-size: 8px;
+    letter-spacing: 0.2px;
+  }
+
+  .phase-meta-stats {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .pred-dual-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -329,8 +329,83 @@ html, body {
 }
 
 /* ================================================================
-   Responsive Breakpoints
+   Mobile Segmented Navigation Switcher (Native App-Like UX)
 ================================================================ */
+.mobile-view-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-view-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(18, 23, 19, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    position: sticky;
+    top: 8px;
+    z-index: 99;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mobile-view-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-nav-pill {
+    flex: 1;
+    min-height: 42px;
+    padding: 6px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+  }
+
+  .mobile-nav-pill:active {
+    transform: scale(0.97);
+  }
+
+  .mobile-nav-pill.active {
+    background: var(--bg-surface-elevated);
+    color: var(--lime);
+    border-color: var(--border-bright);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  /* View Filtering Rules on Mobile */
+  body.view-telemetry .dashboard-column.center-col {
+    display: none !important;
+  }
+  body.view-displays .dashboard-column.left-col,
+  body.view-displays .dashboard-column.right-col,
+  body.view-displays .serial-card {
+    display: none !important;
+  }
+  body.view-serial .dashboard-column.left-col,
+  body.view-serial .dashboard-column.right-col,
+  body.view-serial .display-card {
+    display: none !important;
+  }
+}
+
 /* ================================================================
    Responsive Breakpoints & Mobile Optimization
 ================================================================ */
@@ -345,10 +420,11 @@ html, body {
   }
   .dashboard-column.center-col {
     grid-column: 1 / -1;
-    order: -1;
+    order: 3;
   }
   .dashboard-column.right-col {
     grid-column: 2;
+    order: 2;
   }
   .top-nav {
     flex-wrap: wrap;
@@ -359,13 +435,18 @@ html, body {
 /* Mobile Devices (<600px) */
 @media (max-width: 600px) {
   html, body {
+    width: 100%;
+    max-width: 100vw;
     overflow-x: hidden;
+    touch-action: pan-y;
   }
 
   .app-wrapper {
     padding: 10px 12px max(24px, env(safe-area-inset-bottom)) 12px;
     gap: 12px;
     width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   .dashboard-grid {
@@ -373,13 +454,14 @@ html, body {
     gap: 12px;
   }
 
+  /* Ergonomic mobile ordering: Gauge & Controls -> Pump/Buzzer/ML -> Hardware Screens */
   .dashboard-column.left-col {
     order: 1;
   }
-  .dashboard-column.center-col {
+  .dashboard-column.right-col {
     order: 2;
   }
-  .dashboard-column.right-col {
+  .dashboard-column.center-col {
     order: 3;
   }
 
