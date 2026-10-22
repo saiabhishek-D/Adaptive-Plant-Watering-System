@@ -1,0 +1,422 @@
+/* ================================================================
+   cards.css — Phase Progress Bar, Pump, Buzzer & Prediction Cards
+   Clean, Modern & Eye-Friendly IoT Card Styling
+================================================================ */
+
+/* ================================================================
+   1. PHASE PROGRESS BAR CARD
+================================================================ */
+.phase-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.phase-header-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.phase-name-badge {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+}
+
+.phase-name-badge.early {
+  color: var(--cyan);
+}
+.phase-name-badge.mid {
+  color: var(--lime);
+}
+.phase-name-badge.late {
+  color: var(--amber);
+}
+.phase-name-badge.overdue {
+  color: var(--red);
+}
+
+.phase-pct-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Horizontal Segmented Bar Track */
+.phase-track-wrapper {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+}
+
+.phase-segmented-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-inset);
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--border-dim);
+}
+
+.phase-segment {
+  height: 100%;
+  position: relative;
+}
+
+.seg-early {
+  width: 70%;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.4) 100%);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+.seg-mid {
+  width: 20%;
+  background: linear-gradient(90deg, rgba(52, 211, 153, 0.25) 0%, rgba(52, 211, 153, 0.45) 100%);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+.seg-late {
+  width: 10%;
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.25) 0%, rgba(251, 191, 36, 0.5) 100%);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+.seg-overdue {
+  width: 20%;
+  background: linear-gradient(90deg, rgba(248, 113, 113, 0.3) 0%, rgba(248, 113, 113, 0.6) 100%);
+}
+
+/* Sliding Dot */
+.phase-indicator-dot {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--lime);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  transition: left 0.3s ease, border-color 0.25s ease;
+  z-index: 4;
+}
+
+.phase-indicator-dot.early {
+  border-color: var(--cyan);
+}
+.phase-indicator-dot.mid {
+  border-color: var(--lime);
+}
+.phase-indicator-dot.late {
+  border-color: var(--amber);
+}
+.phase-indicator-dot.overdue {
+  border-color: var(--red);
+}
+
+.phase-zone-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.phase-meta-stats {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-dim);
+  font-size: 11px;
+}
+
+.phase-stat-item {
+  color: var(--text-secondary);
+}
+
+.phase-stat-value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ================================================================
+   2. PUMP STATUS CARD
+================================================================ */
+.pump-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  transition: all 0.25s ease;
+}
+
+.pump-card.active {
+  border-color: var(--border-bright);
+  background: linear-gradient(135deg, rgba(27, 43, 31, 0.9) 0%, rgba(18, 26, 20, 0.9) 100%);
+  animation: pumpPulseBorder 1.5s infinite alternate ease-in-out;
+}
+
+.pump-info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pump-status-label {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+}
+
+.pump-card.active .pump-status-label {
+  color: var(--lime);
+}
+
+.pump-subtext {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Concentric Ripple Water Droplet Graphic */
+.pump-visual-side {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-ripple-container {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ripple-circle {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lime);
+  opacity: 0;
+}
+
+.pump-card.active .ripple-1 {
+  animation: concentricRipple 1.8s infinite cubic-bezier(0.1, 0.2, 0.3, 1);
+}
+.pump-card.active .ripple-2 {
+  animation: concentricRipple 1.8s infinite 0.5s cubic-bezier(0.1, 0.2, 0.3, 1);
+}
+.pump-card.active .ripple-3 {
+  animation: concentricRipple 1.8s infinite 1.0s cubic-bezier(0.1, 0.2, 0.3, 1);
+}
+
+.pump-icon-disc {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.pump-card.active .pump-icon-disc {
+  background: var(--lime);
+  color: #0b1a10;
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* ================================================================
+   3. BUZZER / ANOMALY CARD
+================================================================ */
+.buzzer-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  transition: all 0.25s ease;
+}
+
+.buzzer-card.state-amber {
+  border-color: var(--amber);
+  background: linear-gradient(135deg, rgba(46, 34, 15, 0.9) 0%, rgba(26, 20, 10, 0.9) 100%);
+  animation: anomalyPulseAmber 1.2s infinite alternate ease-in-out;
+}
+
+.buzzer-card.state-red {
+  border-color: var(--red);
+  background: linear-gradient(135deg, rgba(46, 18, 18, 0.9) 0%, rgba(26, 12, 12, 0.9) 100%);
+  animation: anomalyPulseRed 1.0s infinite alternate ease-in-out;
+}
+
+.buzzer-info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.buzzer-status-label {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--lime);
+  transition: color 0.25s ease;
+}
+
+.buzzer-card.state-amber .buzzer-status-label {
+  color: var(--amber);
+}
+
+.buzzer-card.state-red .buzzer-status-label {
+  color: var(--red);
+}
+
+.buzzer-subtext {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.buzzer-icon-disc {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lime-dim);
+  transition: all 0.25s ease;
+}
+
+.buzzer-card.state-amber .buzzer-icon-disc {
+  background: var(--amber);
+  color: #1a1000;
+  border-color: #ffffff;
+}
+
+.buzzer-card.state-red .buzzer-icon-disc {
+  background: var(--red);
+  color: #1a0505;
+  border-color: #ffffff;
+}
+
+/* ================================================================
+   4. PREDICTION CARD (EMA & ML)
+================================================================ */
+.prediction-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pred-main-display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pred-highlight-text {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text-bright);
+}
+
+.pred-sub-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Prediction Dual Tile Comparison (EMA vs ML Model) */
+.pred-dual-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.pred-tile {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pred-tile-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pred-tile-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--lime);
+}
+
+.pred-tile-val.ml {
+  color: var(--cyan);
+}
+
+/* ML Status Bar for ml-model.js compatibility */
+.ml-status-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-dim);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.ml-status-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ml-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--lime);
+  transition: all 0.25s ease;
+}
+
+.ml-status-dot.training {
+  background-color: var(--amber);
+  animation: pulseAmber 1s infinite alternate;
+}

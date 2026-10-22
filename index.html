@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Adaptive Predictive Plant Watering System — IoT Console</title>
+  <meta name="description" content="Stunning IoT monitoring console & Arduino simulation for Adaptive Predictive Plant Watering with EMA and TensorFlow.js ML prediction">
+
+  <!-- External Stylesheets (Split across modular files) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/gauge.css">
+  <link rel="stylesheet" href="css/display.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/notifications.css">
+
+  <!-- TensorFlow.js for the onboard ML model -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+</head>
+<body>
+
+  <!-- Hidden Embedded SVG Sprite for Universal Local & Live Server Compatibility -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="icon-water-drop" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+      <path fill="rgba(255,255,255,0.3)" d="M9.5 9.5c0 1.5-.7 2.5-2 3 .3-1.8 1-3.2 2-3.8z"/>
+    </symbol>
+    <symbol id="icon-pump" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="12" r="3" fill="currentColor"/>
+      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 4v3M12 17v3M4 12h3M17 12h3M6.34 6.34l2.12 2.12M15.54 15.54l2.12 2.12M6.34 17.66l2.12-2.12M15.54 8.46l2.12-2.12"/>
+      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M20 12h3M21 9l2 3-2 3"/>
+    </symbol>
+    <symbol id="icon-buzzer" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </symbol>
+    <symbol id="icon-leaf" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c1-1.5 3-2 5-2 4 0 6 2 6 2"/>
+    </symbol>
+    <symbol id="icon-terminal" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6-6-6M12 19h8"/>
+    </symbol>
+    <symbol id="icon-chip" viewBox="0 0 24 24">
+      <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="8.5" y="8.5" width="7" height="7" fill="currentColor" opacity="0.3"/>
+      <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+    </symbol>
+  </svg>
+
+  <div class="app-wrapper">
+
+    <!-- Top Navigation & System Telemetry Bar -->
+    <header class="top-nav">
+      <div class="brand-row-mobile">
+        <div class="brand-section">
+          <div class="brand-logo-badge">
+            <svg class="icon" style="width:24px;height:24px;"><use href="#icon-leaf"></use></svg>
+          </div>
+          <div class="brand-titles">
+            <h1>
+              Adaptive Plant Watering System
+              <span class="badge-tag">ARDUINO PRO</span>
+            </h1>
+            <div class="brand-subtitle">Autonomous Predictive Soil Hydration Engine</div>
+          </div>
+        </div>
+
+        <!-- Notification Bell Trigger -->
+        <button id="btn-notification-bell" class="notification-bell-btn" aria-label="System Notifications" title="View Alerts & System Log">
+          <svg class="icon" style="width:18px;height:18px;"><use href="#icon-bell"></use></svg>
+          <span id="notification-badge" class="notification-badge"></span>
+        </button>
+      </div>
+
+      <div class="system-telemetry-strip">
+        <div class="telemetry-pill">
+          <span class="status-dot-pulse"></span>
+          <span>COM3 ONLINE (115200 BAUD)</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="telemetry-label">Sim Time Scale</span>
+          <span class="telemetry-value">1s = 1h sim</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="telemetry-label">EMA Alpha</span>
+          <span id="telemetry-ema-alpha" class="telemetry-value">α = 0.25</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main 3-Column IoT Dashboard Grid (Fluid Single Column on Mobile) -->
+    <main class="dashboard-grid">
+
+      <!-- ========================================================
+           COLUMN 1 (LEFT): Soil Moisture Gauge & Controls
+      ======================================================== -->
+      <section class="dashboard-column left-col">
+        <div class="iot-card moisture-card">
+          <div class="card-header-bar" style="width: 100%;">
+            <div class="card-title">
+              <svg class="icon"><use href="#icon-water-drop"></use></svg>
+              <span>Moisture Sensor</span>
+            </div>
+            <span id="gauge-status-pill" class="gauge-status-pill badge-success">OPTIMAL MOISTURE</span>
+          </div>
+
+          <!-- SVG Circular Arc Gauge (0–100%) -->
+          <div class="gauge-visual-container">
+            <svg class="gauge-svg" viewBox="0 0 240 220">
+              <!-- Background Static Track Arc (270° from 135° to 45°) -->
+              <path
+                class="gauge-track"
+                d="M 59.89 180.11 A 85 85 0 1 1 180.11 180.11"
+              />
+              <!-- Dynamic Value Arc -->
+              <path
+                id="gauge-value-arc"
+                class="gauge-value-arc gauge-optimal"
+                d="M 59.89 180.11 A 85 85 0 1 1 180.11 180.11"
+              />
+            </svg>
+
+            <!-- Center Gauge Readout -->
+            <div class="gauge-center-content">
+              <div class="gauge-pct-value">
+                <span id="gauge-pct-num">75</span><span class="gauge-pct-symbol">%</span>
+              </div>
+              <div class="gauge-label">Soil Moisture</div>
+            </div>
+          </div>
+
+          <!-- Slider & Simulation Controls -->
+          <div class="moisture-controls-section">
+            <div class="control-row-header">
+              <span class="control-label">Manual Potentiometer (A0)</span>
+              <span id="slider-val-readout" class="control-val-readout">75%</span>
+            </div>
+
+            <!-- Custom Styled Range Slider -->
+            <div class="slider-container">
+              <input
+                type="range"
+                id="moisture-slider"
+                class="styled-range-slider"
+                min="0"
+                max="100"
+                value="75"
+                step="1"
+                aria-label="Adjust Soil Moisture"
+              />
+              <div class="slider-ticks">
+                <span>0%</span>
+                <span class="tick-dry">30% (DRY)</span>
+                <span class="tick-wet">80% (WET)</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons & Auto Simulate Switch -->
+            <div class="control-actions-panel">
+              <div class="toggle-switch-wrapper">
+                <div class="toggle-info">
+                  <div class="toggle-title">Auto Simulate</div>
+                  <div class="toggle-desc">Moisture drifts down ~0.5%/s, auto-waters &lt;30%</div>
+                </div>
+                <label class="switch-label">
+                  <input type="checkbox" id="auto-simulate-toggle" checked aria-label="Toggle Auto Simulation" />
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+
+              <button id="btn-manual-pump" class="btn-manual-pump" aria-label="Activate Submersible Pump Relay">
+                <svg class="icon"><use href="#icon-water-drop"></use></svg>
+                <span>Activate Pump Relay</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           COLUMN 2 (CENTER): Display Panel & Serial Monitor
+      ======================================================== -->
+      <section class="dashboard-column center-col">
+        <!-- Hardware Display Panel (OLED / LCD Tabs) -->
+        <div class="iot-card display-panel-card">
+          <div class="display-header-nav">
+            <div class="card-title">
+              <svg class="icon"><use href="#icon-chip"></use></svg>
+              <span>Hardware Display Output</span>
+            </div>
+            <div class="screen-tabs-toggle">
+              <button id="tab-btn-oled" class="tab-btn active" aria-label="Select OLED Display Mode">
+                <span>OLED 128x64</span>
+              </button>
+              <button id="tab-btn-lcd" class="tab-btn" aria-label="Select LCD Display Mode">
+                <span>LCD 20x4</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="display-hardware-viewport">
+            <!-- 1. Realistic OLED Bezel -->
+            <div id="oled-bezel-frame" class="oled-bezel-frame">
+              <div class="oled-screen-inner">
+                <div id="oled-line-0" class="oled-line">Moisture: 75%</div>
+                <div id="oled-line-1" class="oled-line">EARLY 0-70%</div>
+                <div id="oled-line-2" class="oled-line">E:0h  P:24h</div>
+                <div id="oled-line-3" class="oled-line">STATUS: OK</div>
+              </div>
+            </div>
+
+            <!-- 2. Realistic LCD Bezel (Default hidden, switched via tab) -->
+            <div id="lcd-bezel-frame" class="lcd-bezel-frame" style="display: none;">
+              <div class="lcd-screen-inner">
+                <div id="lcd-line-0" class="lcd-line">Moisture: 75%</div>
+                <div id="lcd-line-1" class="lcd-line">EARLY 0-70%</div>
+                <div id="lcd-line-2" class="lcd-line">E:0h  P:24h</div>
+                <div id="lcd-line-3" class="lcd-line">STATUS: OK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Serial Monitor Terminal -->
+        <div class="serial-card">
+          <div class="serial-header">
+            <div class="serial-title-group">
+              <span class="serial-led-rx"></span>
+              <svg class="icon"><use href="#icon-terminal"></use></svg>
+              <span>Serial Monitor</span>
+              <span class="card-badge badge-info">115200 BAUD</span>
+            </div>
+            <div class="serial-actions">
+              <button id="btn-autoscroll" class="btn-serial-action">AUTO-SCROLL: ON</button>
+              <button id="btn-clear-serial" class="btn-serial-action">CLEAR</button>
+            </div>
+          </div>
+          <div id="serial-viewport" class="serial-viewport" role="log" aria-live="polite">
+            <!-- Serial entries append here with @keyframes lineFadeIn -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           COLUMN 3 (RIGHT): Phase, Pump, Buzzer, Prediction Cards
+      ======================================================== -->
+      <section class="dashboard-column right-col">
+
+        <!-- 1. Phase Progress Bar Card -->
+        <div class="iot-card phase-card">
+          <div class="card-header-bar">
+            <div class="card-title">Adaptive Phase Window</div>
+            <span id="phase-pct-badge" class="phase-pct-badge">0% elapsed</span>
+          </div>
+
+          <div class="phase-header-display">
+            <div id="phase-name-badge" class="phase-name-badge early">EARLY</div>
+          </div>
+
+          <!-- Horizontal Segmented Bar with Sliding Dot -->
+          <div class="phase-track-wrapper">
+            <div class="phase-segmented-bar">
+              <div class="phase-segment seg-early" title="Early (0-70%)"></div>
+              <div class="phase-segment seg-mid" title="Mid (70-90%)"></div>
+              <div class="phase-segment seg-late" title="Late (90-100%)"></div>
+              <div class="phase-segment seg-overdue" title="Overdue (>100%)"></div>
+            </div>
+            <!-- Sliding Dot -->
+            <div id="phase-indicator-dot" class="phase-indicator-dot early" style="left: 0%;"></div>
+          </div>
+
+          <div class="phase-zone-labels">
+            <span>EARLY (0-70%)</span>
+            <span>MID (90%)</span>
+            <span>LATE</span>
+            <span>OVERDUE</span>
+          </div>
+
+          <div class="phase-meta-stats">
+            <div class="phase-stat-item">
+              Elapsed: <span id="stat-elapsed-val" class="phase-stat-value">0.0h</span>
+            </div>
+            <div class="phase-stat-item">
+              Predicted: <span id="stat-pred-val" class="phase-stat-value">24.0h</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Pump Status Card -->
+        <div id="card-pump" class="iot-card pump-card">
+          <div class="pump-info-side">
+            <div class="card-title">
+              <svg class="icon"><use href="#icon-pump"></use></svg>
+              <span>Submersible Pump</span>
+            </div>
+            <div id="pump-status-label" class="pump-status-label">PUMP OFF</div>
+            <div id="pump-subtext" class="pump-subtext">Standby mode — monitoring thresholds</div>
+          </div>
+
+          <!-- Animated Concentric Ripple Water Droplet -->
+          <div class="pump-visual-side">
+            <div class="water-ripple-container">
+              <span class="ripple-circle ripple-1"></span>
+              <span class="ripple-circle ripple-2"></span>
+              <span class="ripple-circle ripple-3"></span>
+            </div>
+            <div class="pump-icon-disc">
+              <svg class="icon" style="width:22px;height:22px;"><use href="#icon-water-drop"></use></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Buzzer / Anomaly Card -->
+        <div id="card-buzzer" class="iot-card buzzer-card">
+          <div class="buzzer-info-side">
+            <div class="card-title">
+              <svg class="icon"><use href="#icon-buzzer"></use></svg>
+              <span>Piezo Alarm & Anomaly</span>
+            </div>
+            <div id="buzzer-status-label" class="buzzer-status-label">ALL CLEAR</div>
+            <div id="buzzer-subtext" class="buzzer-subtext">Hydration patterns within normal bounds</div>
+          </div>
+          <div class="buzzer-icon-disc">
+            <svg class="icon" style="width:22px;height:22px;"><use href="#icon-buzzer"></use></svg>
+          </div>
+        </div>
+
+        <!-- 4. Prediction Card (EMA & Neural Network ML) -->
+        <div class="iot-card prediction-card">
+          <div class="card-header-bar">
+            <div class="card-title">Adaptive Prediction Engine</div>
+            <span class="card-badge badge-success">ACTIVE</span>
+          </div>
+
+          <div class="pred-main-display">
+            <div id="pred-highlight-text" class="pred-highlight-text">NEXT WATER IN: 24.0h</div>
+            <div id="pred-sub-label" class="pred-sub-label">EMA α=0.25 | Cycle #0</div>
+          </div>
+
+          <!-- Dual Prediction Comparison: EMA vs Onboard Neural Net -->
+          <div class="pred-dual-comparison">
+            <div class="pred-tile">
+              <div class="pred-tile-title">
+                <span>EMA Model</span>
+              </div>
+              <div id="pred-ema-val" class="pred-tile-val">24.0h</div>
+            </div>
+            <div class="pred-tile">
+              <div class="pred-tile-title">
+                <span>TF.js ML Net</span>
+              </div>
+              <div id="pred-ml-val" class="pred-tile-val ml">24.0h</div>
+            </div>
+          </div>
+
+          <!-- ML Model Status Bar (Hooked to ml-model.js updateMLStatus) -->
+          <div class="ml-status-footer">
+            <div class="ml-status-tag">
+              <span id="ml-status-dot" class="ml-status-dot"></span>
+              <span id="ml-status-text">Model training...</span>
+            </div>
+            <span id="ml-conf-tag">Dense(32→16→8→1)</span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Floating Toast Notification Stack -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Notification History Drawer Modal -->
+  <div id="notification-drawer-backdrop" class="notification-drawer-backdrop"></div>
+  <aside id="notification-drawer" class="notification-drawer" aria-label="Notification Log">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <svg class="icon"><use href="#icon-bell"></use></svg>
+        <span class="drawer-title">System Alerts &amp; Logs</span>
+      </div>
+      <button id="btn-close-drawer" class="btn-serial-action" aria-label="Close Drawer">&times;</button>
+    </div>
+    <div class="drawer-actions-bar">
+      <button id="btn-toggle-sound" class="btn-drawer-action">Sound: ON</button>
+      <button id="btn-push-perm" class="btn-drawer-action">🔔 Push Alerts</button>
+      <button id="btn-clear-notifications" class="btn-drawer-action">Clear</button>
+    </div>
+    <div id="drawer-list" class="drawer-list">
+      <!-- Dynamically populated by notifications.js -->
+    </div>
+  </aside>
+
+  <!-- Modular JavaScript Files Loaded in Logical Order -->
+  <script src="js/notifications.js"></script>
+  <script src="js/serial.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/gauge.js"></script>
+  <script src="js/display.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/ml-model.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

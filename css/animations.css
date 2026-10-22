@@ -1,0 +1,125 @@
+/* ================================================================
+   animations.css — Keyframes, Smooth Transitions & Micro-Interactions
+================================================================ */
+
+/* 1. Serial Monitor Line Fade-in */
+@keyframes lineFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. OLED Subtle Hardware Screen Flicker (Soft 0.985–1.0 on slow loop) */
+@keyframes oledFlicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.992;
+  }
+  50% {
+    opacity: 0.985;
+  }
+  75% {
+    opacity: 0.995;
+  }
+}
+
+/* 3. Pump Card Concentric Ripple Wave (Expanding + Fading Circles) */
+@keyframes concentricRipple {
+  0% {
+    width: 24px;
+    height: 24px;
+    opacity: 0.75;
+    border-color: var(--lime);
+    box-shadow: 0 0 8px var(--lime-glow);
+  }
+  60% {
+    opacity: 0.35;
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan-glow);
+  }
+  100% {
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+    border-color: var(--cyan-dim);
+    box-shadow: none;
+  }
+}
+
+/* 4. Active Pump Card Border Pulse — Refined & Non-Flashy */
+@keyframes pumpPulseBorder {
+  0% {
+    border-color: rgba(52, 211, 153, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 12px rgba(52, 211, 153, 0.15);
+  }
+  100% {
+    border-color: rgba(52, 211, 153, 0.75);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 20px rgba(52, 211, 153, 0.3);
+  }
+}
+
+/* 5. Buzzer / Anomaly Refined Alert Pulses */
+@keyframes anomalyPulseAmber {
+  0% {
+    border-color: rgba(251, 191, 36, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 12px rgba(251, 191, 36, 0.15);
+  }
+  100% {
+    border-color: rgba(251, 191, 36, 0.8);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 22px rgba(251, 191, 36, 0.35);
+  }
+}
+
+@keyframes anomalyPulseRed {
+  0% {
+    border-color: rgba(248, 113, 113, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 12px rgba(248, 113, 113, 0.15);
+  }
+  100% {
+    border-color: rgba(248, 113, 113, 0.8);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 22px rgba(248, 113, 113, 0.35);
+  }
+}
+
+/* 6. Pulse Dots & Badges */
+@keyframes pulseLime {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulseAmber {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+/* 7. Card & Button Global Transitions */
+.iot-card,
+.tab-btn,
+.btn-manual-pump,
+.btn-serial-action,
+.phase-indicator-dot,
+.gauge-value-arc,
+.styled-range-slider::-webkit-slider-thumb,
+.switch-slider {
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,0 +1,516 @@
+/* ================================================================
+   base.css — Reset, Typography, CSS Variables, & Grid Layout
+   Refined Matte Slate-Green IoT Console Theme (Eye-Friendly & Premium)
+================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap');
+
+:root {
+  /* Calibrated Matte Surfaces (Soothing Charcoal-Forest Palette) */
+  --bg-deep: #0a0d0b;
+  --bg-base: #101411;
+  --bg-surface: #151a16;
+  --bg-surface-elevated: #1b221d;
+  --bg-surface-hover: #222b25;
+  --bg-surface-glass: rgba(21, 26, 22, 0.88);
+  --bg-inset: #0c0f0d;
+  --bg-bezel: #1e2420;
+  --bg-screen-oled: #050705;
+  --bg-screen-lcd: #0f261c;
+
+  /* Restrained, Crisp Borders */
+  --border-dim: #1c241e;
+  --border-subtle: #28342b;
+  --border-bright: #3a4c3f;
+  --border-glow: rgba(52, 211, 153, 0.16);
+  --border-focus: #34d399;
+
+  /* Calibrated Accents (Refined & Easy on the Eyes) */
+  --lime: #34d399;          /* High-end emerald green (healthy/optimal) */
+  --lime-dim: #10b981;
+  --lime-glow: rgba(52, 211, 153, 0.22);
+  --lime-soft: rgba(52, 211, 153, 0.10);
+
+  --amber: #fbbf24;         /* Warm amber (warning/mid-late) */
+  --amber-dim: #d97706;
+  --amber-glow: rgba(251, 191, 36, 0.22);
+  --amber-soft: rgba(251, 191, 36, 0.10);
+
+  --red: #f87171;           /* Soft rose-red (alert/dry) */
+  --red-dim: #dc2626;
+  --red-glow: rgba(248, 113, 113, 0.22);
+  --red-soft: rgba(248, 113, 113, 0.10);
+
+  --cyan: #38bdf8;          /* Clear sky cyan (water/moist) */
+  --cyan-dim: #0284c7;
+  --cyan-glow: rgba(56, 189, 248, 0.20);
+  --cyan-soft: rgba(56, 189, 248, 0.10);
+
+  --blue: #3b82f6;
+
+  /* Balanced, High-Legibility Typography Colors */
+  --text-bright: #f8fafc;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+
+  /* Fonts */
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --font-pixel: 'Press Start 2P', monospace;
+
+  /* Sizing & Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* Softer, Natural Layered Shadows */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.03);
+  --shadow-glow-lime: 0 0 18px var(--lime-glow);
+  --shadow-glow-amber: 0 0 18px var(--amber-glow);
+  --shadow-glow-red: 0 0 18px var(--red-glow);
+}
+
+/* ================================================================
+   Reset & Baseline
+================================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  background-image: 
+    linear-gradient(180deg, #0d110e 0%, #111512 100%);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle, Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: var(--radius-xs);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-bright);
+}
+
+/* SVG Icon Helper */
+.icon {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.2em;
+  fill: currentColor;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   App Shell & Header
+================================================================ */
+.app-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px 36px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #18231b 0%, #0e1410 100%);
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lime);
+}
+
+.brand-titles h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-bright);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: var(--lime-soft);
+  color: var(--lime);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.system-telemetry-strip {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.telemetry-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.telemetry-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  font-weight: 600;
+}
+
+.telemetry-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--lime);
+  box-shadow: 0 0 8px var(--lime-glow);
+}
+
+.telemetry-pill {
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-dim);
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ================================================================
+   3-Column Responsive Dashboard Grid
+================================================================ */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Base Card Styling — Refined Matte Surfaces */
+.iot-card {
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.iot-card:hover {
+  border-color: var(--border-bright);
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.card-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.5px;
+}
+
+.badge-info {
+  background: var(--cyan-soft);
+  color: var(--cyan);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.badge-success {
+  background: var(--lime-soft);
+  color: var(--lime);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+
+.badge-warning {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.badge-danger {
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+/* ================================================================
+   Responsive Breakpoints
+================================================================ */
+/* ================================================================
+   Responsive Breakpoints & Mobile Optimization
+================================================================ */
+/* Tablet (600px - 1024px) */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .dashboard-column.left-col {
+    grid-column: 1;
+  }
+  .dashboard-column.center-col {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .dashboard-column.right-col {
+    grid-column: 2;
+  }
+  .top-nav {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+}
+
+/* Mobile Devices (<600px) */
+@media (max-width: 600px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .app-wrapper {
+    padding: 10px 12px max(24px, env(safe-area-inset-bottom)) 12px;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dashboard-column.left-col {
+    order: 1;
+  }
+  .dashboard-column.center-col {
+    order: 2;
+  }
+  .dashboard-column.right-col {
+    order: 3;
+  }
+
+  /* Header on Mobile */
+  .top-nav {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .brand-row-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .brand-section {
+    gap: 10px;
+  }
+
+  .brand-titles h1 {
+    font-size: 13.5px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .brand-subtitle {
+    font-size: 10px;
+  }
+
+  .system-telemetry-strip {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-dim);
+  }
+
+  .telemetry-pill {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .telemetry-label {
+    font-size: 9px;
+  }
+  .telemetry-value {
+    font-size: 11px;
+  }
+
+  /* Cards on Mobile */
+  .iot-card {
+    padding: 14px 14px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Touch-Friendly Buttons */
+  .btn-manual-pump {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 11.5px;
+  }
+
+  .tab-btn {
+    min-height: 38px;
+    padding: 8px 12px;
+  }
+
+  .btn-serial-action {
+    min-height: 30px;
+    padding: 4px 10px;
+  }
+
+  /* Display Hardware on Mobile */
+  .oled-bezel-frame,
+  .lcd-bezel-frame {
+    padding: 12px 14px;
+  }
+
+  .oled-screen-inner,
+  .lcd-screen-inner {
+    padding: 14px 12px;
+    min-height: 130px;
+  }
+
+  .oled-line {
+    font-size: 10px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .lcd-line {
+    font-size: 11px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .serial-viewport {
+    height: 180px;
+    font-size: 10.5px;
+    padding: 10px 12px;
+  }
+
+  /* Prediction Tiles on Mobile */
+  .pred-dual-comparison {
+    gap: 8px;
+  }
+  .pred-tile {
+    padding: 8px 10px;
+  }
+  .pred-tile-val {
+    font-size: 14.5px;
+  }
+}
+
+/* Extra Small Phones (<380px) */
+@media (max-width: 380px) {
+  .pred-dual-comparison {
+    grid-template-columns: 1fr;
+  }
+  .gauge-pct-value {
+    font-size: 38px;
+  }
+  .gauge-visual-container {
+    height: 190px;
+  }
+}

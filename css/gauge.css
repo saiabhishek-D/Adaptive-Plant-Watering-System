@@ -1,0 +1,349 @@
+/* ================================================================
+   gauge.css — Moisture Arc Gauge, Custom Slider & Control Styles
+   Soft, Eye-Friendly Precision IoT Styling
+================================================================ */
+
+.moisture-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+/* Arc Gauge SVG Frame */
+.gauge-visual-container {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+  height: 220px;
+  margin: 4px auto 12px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Background Track Arc */
+.gauge-track {
+  fill: none;
+  stroke: var(--bg-inset);
+  stroke-width: 14;
+  stroke-linecap: round;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* Dynamic Active Value Arc */
+.gauge-value-arc {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440; /* Updated via JS */
+  transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* Gauge Color Shifts */
+.gauge-dry {
+  stroke: var(--red);
+  color: var(--red);
+}
+.gauge-warn {
+  stroke: var(--amber);
+  color: var(--amber);
+}
+.gauge-optimal {
+  stroke: var(--lime);
+  color: var(--lime);
+}
+.gauge-wet {
+  stroke: var(--cyan);
+  color: var(--cyan);
+}
+
+/* Center Percentage Text */
+.gauge-center-content {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gauge-pct-value {
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--text-bright);
+  transition: color 0.3s ease;
+}
+
+.gauge-pct-symbol {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+.gauge-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.gauge-status-pill {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+/* Slider Controls Section */
+.moisture-controls-section {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.control-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.control-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.control-val-readout {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--lime);
+}
+
+/* Custom Styled Range Slider */
+.slider-container {
+  width: 100%;
+  position: relative;
+}
+
+.styled-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    var(--red) 0%,
+    var(--red) 28%,
+    var(--amber) 32%,
+    var(--lime) 50%,
+    var(--lime) 78%,
+    var(--cyan) 82%,
+    var(--cyan) 100%
+  );
+  outline: none;
+  cursor: pointer;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.styled-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--lime);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  cursor: grab;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.styled-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+  border-color: #6ee7b7;
+}
+
+.styled-range-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+.styled-range-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--lime);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  cursor: grab;
+}
+
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 0 2px;
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tick-dry { color: var(--red); }
+.tick-wet { color: var(--cyan); }
+
+/* Auto Simulate & Manual Actions */
+.control-actions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-dim);
+}
+
+.toggle-switch-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-md);
+}
+
+.toggle-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.toggle-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-primary);
+}
+
+.toggle-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Custom CSS Toggle Switch */
+.switch-label {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch-label input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  transition: 0.25s ease;
+}
+
+.switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  transition: 0.25s ease;
+}
+
+.switch-label input:checked + .switch-slider {
+  background-color: var(--lime-dim);
+  border-color: var(--lime);
+}
+
+.switch-label input:checked + .switch-slider::before {
+  transform: translateX(20px);
+  background-color: #ffffff;
+}
+
+/* Manual Water Button */
+.btn-manual-pump {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-bright);
+  background: linear-gradient(180deg, #1c271f 0%, #141b16 100%);
+  color: var(--lime);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-manual-pump:hover:not(:disabled) {
+  background: linear-gradient(180deg, #233127 0%, #18221b 100%);
+  border-color: var(--lime-dim);
+  color: var(--text-bright);
+}
+
+.btn-manual-pump:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-manual-pump:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--border-dim);
+  color: var(--text-muted);
+}

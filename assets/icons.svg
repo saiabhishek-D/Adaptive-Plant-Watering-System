@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- Water Drop Symbol -->
+  <symbol id="icon-water-drop" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+    <path fill="rgba(255,255,255,0.3)" d="M9.5 9.5c0 1.5-.7 2.5-2 3 .3-1.8 1-3.2 2-3.8z"/>
+  </symbol>
+
+  <!-- Pump / Motor Symbol -->
+  <symbol id="icon-pump" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 4v3M12 17v3M4 12h3M17 12h3M6.34 6.34l2.12 2.12M15.54 15.54l2.12 2.12M6.34 17.66l2.12-2.12M15.54 8.46l2.12-2.12"/>
+    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M20 12h3M21 9l2 3-2 3"/>
+  </symbol>
+
+  <!-- Buzzer / Alarm Symbol -->
+  <symbol id="icon-buzzer" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </symbol>
+
+  <!-- Plant Leaf Symbol -->
+  <symbol id="icon-leaf" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c1-1.5 3-2 5-2 4 0 6 2 6 2"/>
+  </symbol>
+
+  <!-- Terminal / Console Symbol -->
+  <symbol id="icon-terminal" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6-6-6M12 19h8"/>
+  </symbol>
+
+  <!-- CPU / Chip Symbol -->
+  <symbol id="icon-chip" viewBox="0 0 24 24">
+    <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="8.5" y="8.5" width="7" height="7" fill="currentColor" opacity="0.3"/>
+    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+  </symbol>
+</svg>
